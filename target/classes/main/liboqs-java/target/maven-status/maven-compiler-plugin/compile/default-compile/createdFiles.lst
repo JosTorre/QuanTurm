@@ -1,12 +1,12 @@
 org/openquantumsafe/Pair.class
 org/openquantumsafe/MechanismNotSupportedError.class
-org/openquantumsafe/Common.class
 org/openquantumsafe/Signature.class
+org/openquantumsafe/Common.class
 org/openquantumsafe/Rand.class
-org/openquantumsafe/MechanismNotEnabledError.class
 org/openquantumsafe/Signature$Mutable.class
-org/openquantumsafe/KeyEncapsulation$KeyEncapsulationDetails.class
+org/openquantumsafe/MechanismNotEnabledError.class
 org/openquantumsafe/KeyEncapsulation.class
+org/openquantumsafe/KeyEncapsulation$KeyEncapsulationDetails.class
 org/openquantumsafe/KEMs.class
-org/openquantumsafe/Signature$SignatureDetails.class
 org/openquantumsafe/Sigs.class
+org/openquantumsafe/Signature$SignatureDetails.class
