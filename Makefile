@@ -1,3 +1,3 @@
 build-container:
-	mvn compile assembly:single
+	mvn clean compile assembly:single
 	sudo docker build -t lightchain .

@@ -5,25 +5,7 @@
     <groupId>Lightchain-container</groupId>
     <artifactId>lightchain-container</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <profiles>	
-    	<profile>
-            <id>linux</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-                <property>
-                    <name>platform</name>
-                    <value>nix</value>
-                </property>
-            </activation>
-            <properties>
-                <lib_name>liboqs-jni.so</lib_name>
-                <liboqs.include.dir>/usr/local/include</liboqs.include.dir>
-                <liboqs.lib.dir>/usr/local/lib</liboqs.lib.dir>
-                <java.os.include>-I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux</java.os.include>
-            </properties>
-        </profile>
-    </profiles>
-
+    <packaging>jar</packaging>
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <resources>
@@ -35,55 +17,9 @@
             </resource>
         </resources>
         <plugins>
-	     <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.0</version>
-                <configuration>
-			<argLine>-Xss10M -Djava.library.path=${basedir}/src/main/liboqs-java/src/main/resources/</argLine>
-			<argLine>-Djava.library.path=src/main/liboqs-java/src/main/resources/</argLine>
-                </configuration>
-            </plugin>	
-	    <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                        <configuration>
-                            <target>
-				    <mkdir dir="${basedir}/src/main/liboqs-java/src/main/resources/"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-	    </plugin>
-	    <plugin>
-	       <groupId>org.apache.maven.plugins</groupId>
-	       <artifactId>maven-install-plugin</artifactId>
-	       <version>2.5.2</version>
-	       <executions>
-	           <execution>
-	              <phase>initialize</phase>
-		      <goals>
-		          <goal>install-file</goal>
-		      </goals>
-		      <configuration>
-			  <file>target/liboqs-java.jar</file>
-		          <groupId>com.somegroup.id</groupId>
-		          <artifactId>liboqs-jar</artifactId>
-		          <version>0.0.1</version>
-		          <packaging>jar</packaging>
-		      </configuration>
-		   </execution>
-		</executions>
-	    </plugin>
-	    <plugin>
+            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
+		<configuration>
                     <archive>
                         <manifest>
                             <mainClass>fully.qualified.MainClass</mainClass>
@@ -101,88 +37,15 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
-	    </plugin>
-	    <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>native-maven-plugin</artifactId>
-                <version>1.0-alpha-9</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <sources>
-                        <source>
-				<directory>${basedir}/src/main/liboqs-java/src/main/c</directory>
-                            <fileNames>
-                                <fileName>handle.c</fileName>
-                                <fileName>KEMs.c</fileName>
-                                <fileName>KeyEncapsulation.c</fileName>
-                                <fileName>Rand.c</fileName>
-                                <fileName>Signature.c</fileName>
-                                <fileName>Sigs.c</fileName>
-                            </fileNames>
-                        </source>
-                    </sources>
-                    <compilerProvider>generic-classic</compilerProvider>
-                    <compilerExecutable>gcc</compilerExecutable>
-                    <compilerStartOptions>
-                        <compilerStartOption>${java.os.include}</compilerStartOption>
-                        <compilerStartOption>-fPIC</compilerStartOption>
-                        <compilerStartOption>-Wall</compilerStartOption>
-                        <compilerStartOption>-O3</compilerStartOption>
-                        <compilerStartOption>-I${liboqs.include.dir}</compilerStartOption>
-                    </compilerStartOptions>
-                    <linkerOutputDirectory>target</linkerOutputDirectory>
-                    <linkerExecutable>gcc</linkerExecutable>
-                    <linkerStartOptions>
-                        <linkerStartOption>-shared</linkerStartOption>
-                        <linkerStartOption>-L${liboqs.lib.dir}</linkerStartOption>
-                    </linkerStartOptions>
-                    <linkerFinalName/>
-                    <linkerEndOptions>
-			    <linkerEndOption>-o ${basedir}/liboqs-java/src/main/resources/${lib_name}</linkerEndOption>
-                        <linkerEndOption>-loqs</linkerEndOption>
-                    </linkerEndOptions>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>generate-shared-oqs-library</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>initialize</goal>
-                            <goal>compile</goal>
-                            <goal>link</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>	
-    	    <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>process-classes</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/src/main/resources/</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
-    	</plugins>
+        </plugins>
     </build>
     <dependencies>
         <dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-		</dependency>
+	    <groupId>log4j</groupId>
+	    <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+	</dependency>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -195,22 +58,30 @@
             <artifactId>mockito-core</artifactId>
             <version>3.9.0</version>
         </dependency>
-		<dependency>
-			<groupId>com.github.semuxproject</groupId>
-			<artifactId>evm</artifactId>
-			<version>187074ab71</version>
-		</dependency>
+	<dependency>
+            <groupId>com.github.semuxproject</groupId>
+	    <artifactId>evm</artifactId>
+	    <version>187074ab71</version>
+	</dependency>
         <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
             <version>8.42</version>
         </dependency>
-
+        <dependency>
+	    <groupId>org.openquantumsafe</groupId>
+	    <artifactId>liboqs-java</artifactId>
+	    <version>1.0</version>
+	</dependency>
     </dependencies>
     <repositories>
-		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
-		</repository>
-	</repositories>
+	<repository>
+		<id>jitpack.io</id>
+		<url>https://jitpack.io</url>
+	</repository>
+        <repository>
+		<id>oqs</id>
+		<url>file:/home/pqtbadmin/liboqs-java/src/main/resources/</url>
+	</repository>
+    </repositories>
 </project>

@@ -3,7 +3,7 @@ FROM ethereum/solc:0.4.24 as builder
 
 # All our files are transfered to a single folder called "app"
 run mkdir /app
-COPY target/lightchain-container-jar-with-dependencies.jar /app
+COPY target/lightchain-container-*-jar-with-dependencies.jar /app
 COPY src/main/liboqs-java/target/liboqs-java.jar /app
 COPY src/main/resources/log4j.properties /app
 COPY simulation.config /app
@@ -17,7 +17,9 @@ FROM openjdk:8u242-jre
 WORKDIR /app
 # The files from above solidity container are copied into this current container
 COPY --from=builder /app .
+ADD src/main/liboqs-java/target/liboqs-java.jar .
 
 # NOTE: I hard coded the version here
 # TODO: Make the filename below change dynamically with new versions
-CMD ["java","-Djava.library.path=src/main/liboqs-java/src/main/resources/", "-cp", "lightchain-container-jar-with-dependencies.jar", "simulation.SimulationDriver"]
+CMD ["java","-jar","liboqs-java.jar"]
+CMD ["java", "-cp", "lightchain-container-0.0.1-SNAPSHOT-jar-with-dependencies.jar", "simulation.SimulationDriver"]
