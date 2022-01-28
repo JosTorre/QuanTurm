@@ -40,7 +40,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.0</version>
                 <configuration>
-			<argLine>-Xss10M -Djava.library.path=${basedir}/liboqs-java/src/main/resources/</argLine>
+			<argLine>-Xss10M -Djava.library.path=${basedir}/src/main/liboqs-java/src/main/resources/</argLine>
+			<argLine>-Djava.library.path=src/main/liboqs-java/src/main/resources/</argLine>
                 </configuration>
             </plugin>	
 	    <plugin>
@@ -51,7 +52,7 @@
                         <phase>initialize</phase>
                         <configuration>
                             <target>
-				    <mkdir dir="${basedir}/liboqs-java/src/main/resources/"/>
+				    <mkdir dir="${basedir}/src/main/liboqs-java/src/main/resources/"/>
                             </target>
                         </configuration>
                         <goals>
@@ -59,7 +60,27 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+	    </plugin>
+	    <plugin>
+	       <groupId>org.apache.maven.plugins</groupId>
+	       <artifactId>maven-install-plugin</artifactId>
+	       <version>2.5.2</version>
+	       <executions>
+	           <execution>
+	              <phase>initialize</phase>
+		      <goals>
+		          <goal>install-file</goal>
+		      </goals>
+		      <configuration>
+			  <file>target/liboqs-java.jar</file>
+		          <groupId>com.somegroup.id</groupId>
+		          <artifactId>liboqs-jar</artifactId>
+		          <version>0.0.1</version>
+		          <packaging>jar</packaging>
+		      </configuration>
+		   </execution>
+		</executions>
+	    </plugin>
 	    <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>

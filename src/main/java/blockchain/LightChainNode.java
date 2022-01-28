@@ -1,6 +1,6 @@
 package blockchain;
 
-import org.openquantumsafe.QuantumSignature;
+import org.openquantumsafe.*;
 import hashing.Hasher;
 import hashing.HashingTools;
 import org.apache.log4j.Logger;

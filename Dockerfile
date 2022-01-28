@@ -20,5 +20,4 @@ COPY --from=builder /app .
 
 # NOTE: I hard coded the version here
 # TODO: Make the filename below change dynamically with new versions
-CMD ["java","-cp","liboqs-java.jar:src/main/liboqs-java/examples/ Sigs"]
-CMD ["java", "-cp", "lightchain-container-jar-with-dependencies.jar", "simulation.SimulationDriver"]
+CMD ["java","-Djava.library.path=src/main/liboqs-java/src/main/resources/", "-cp", "lightchain-container-jar-with-dependencies.jar", "simulation.SimulationDriver"]
