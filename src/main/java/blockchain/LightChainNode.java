@@ -235,7 +235,7 @@ public class LightChainNode extends SkipNode implements LightChainInterface {
       System.out.println("Ahi te vaaaaaaaa:");
       String texto = "Soy Jose";
       signedText = quantumSignature.signString(texto);
-      logger.debug("Signed Text: " + signedText);
+      System.out.println("Signed Text: " + signedText);
       boolean success = false;
       int waitCount = 3;
       while (!success && waitCount > 0) {
