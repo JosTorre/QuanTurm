@@ -8,6 +8,7 @@ COPY src/main/resources/log4j.properties /app
 COPY simulation.config /app
 COPY contracts/*.sol /app/
 COPY src/main/resources/liboqs-jni.so /app
+#COPY src/main/resources/liboqs-jni.so /app
 WORKDIR /app
 # NOTE: I hard coded the filename here (eg. testcon.sol)
 RUN  solc -o . --bin testcon.sol
@@ -18,7 +19,9 @@ WORKDIR /app
 # The files from above solidity container are copied into this current container
 COPY --from=builder /app .
 ADD src/main/liboqs-java/target/liboqs-java.jar .
-
+ADD src/main/resources/liboqs-jni.so .
+CMD ["export","LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib""]
+ENV LD_LIBRARY_PATH /usr/local/lib
 # NOTE: I hard coded the version here
 # TODO: Make the filename below change dynamically with new versions
 CMD ["java","-Djava.library.path=app/", "-cp", "lightchain-container-0.0.1-SNAPSHOT-jar-with-dependencies.jar", "simulation.SimulationDriver"]

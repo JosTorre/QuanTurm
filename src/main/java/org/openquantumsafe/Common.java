@@ -30,8 +30,8 @@ public class Common {
     public static void loadNativeLibrary() {
         // If the library is in the java library path, load it directly. (e.g., -Djava.library.path=src/main/resources)
         try {
-            System.loadLibrary("oqs-jni");
-        // Otherwise load the library from the liboqs-java.jar
+	   System.loadLibrary("oqs-jni");
+	   // Otherwise load the library from the liboqs-java.jar
         } catch (UnsatisfiedLinkError e) {
             String libName = "llliboqs-jni.so";
             if (Common.isLinux()) {
@@ -42,7 +42,7 @@ public class Common {
                 libName = "oqs-jni.dll";
             }
             URL url = KEMs.class.getResource("/" + libName);
-            File tmpDir;
+	    File tmpDir;
             try {
                 tmpDir = Files.createTempDirectory("oqs-native-lib").toFile();
                 tmpDir.deleteOnExit();
@@ -50,9 +50,9 @@ public class Common {
                 nativeLibTmpFile.deleteOnExit();
                 InputStream in = url.openStream();
                 Files.copy(in, nativeLibTmpFile.toPath());
-                System.load(nativeLibTmpFile.getAbsolutePath());
+		System.load(nativeLibTmpFile.getAbsolutePath());
             } catch (IOException ioException) {
-                ioException.printStackTrace();
+		ioException.printStackTrace();
             }
         }
     }
